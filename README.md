@@ -1,9 +1,45 @@
 # astro-engine
 
-Natal harita hesap servisi. Blogun Next.js uygulaması bunu `127.0.0.1:8787`
-üzerinden çağırır; servis **dışarıya açık değildir**.
+Natal harita hesap servisi — FastAPI üzerinde
+[Kerykeion](https://www.kerykeion.net/) ve Swiss Ephemeris sarmalayıcısı.
 
-Plan ve gerekçeler: repo kökündeki [`NATAL-PLAN.md`](../NATAL-PLAN.md).
+Bir Next.js blogunun `127.0.0.1:8787` üzerinden çağırdığı iç servistir;
+kendisi dışarıya açık değildir.
+
+---
+
+## Lisans bildirimi
+
+Copyright (C) 2026
+
+Bu program özgür yazılımdır: Free Software Foundation tarafından
+yayımlanan **GNU Affero General Public License**'ın 3. sürümü ya da
+(tercihinize bağlı olarak) daha sonraki bir sürümü koşullarıyla yeniden
+dağıtabilir ve/veya değiştirebilirsiniz.
+
+Bu program faydalı olacağı umuduyla dağıtılmaktadır, ancak **HİÇBİR
+GARANTİ VERİLMEZ**; SATILABİLİRLİK veya BELİRLİ BİR AMACA UYGUNLUK zımni
+garantisi dahi verilmez. Ayrıntılar için GNU Affero General Public
+License'a bakınız.
+
+Lisansın tam metni: [`LICENSE`](LICENSE) ·
+<https://www.gnu.org/licenses/agpl-3.0.html>
+
+> **Neden AGPL:** Kerykeion AGPL-3.0, Swiss Ephemeris (pyswisseph) ise
+> AGPL-3.0 veya ticari çift lisanslı. Bu klasör Kerykeion'ı import ettiği
+> için onunla tek program sayılır ve aynı lisans altındadır.
+>
+> AGPL'in 13. maddesi, programla **ağ üzerinden** etkileşen kullanıcılara
+> kaynak kodunun sunulmasını şart koşar. Bu depo o yükümlülüğü karşılamak
+> için açık tutulmaktadır.
+>
+> Servisi çağıran blog uygulaması bu kapsamda **değildir**: ayrı bir
+> process olarak çalışır ve bu programla yalnızca HTTP üzerinden
+> konuşur — herhangi bir web API'sini çağırmakla aynı ilişki.
+
+---
+
+Plan ve gerekçeler: ana depodaki `NATAL-PLAN.md`.
 
 ## Kurulum
 
