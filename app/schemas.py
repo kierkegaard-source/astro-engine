@@ -16,6 +16,10 @@ ZodiacType = Literal["Tropical", "Sidereal"]
 ChartTheme = Literal["light", "dark", "dark-high-contrast", "classic", "black-and-white"]
 ChartLanguage = Literal["TR", "EN"]
 
+#: `modern` her gezegenin yanına derece + burç + dakika yazar (retro için RX).
+#: `classic` yalnız sembolü çizer, dereceler dış halkadaki işaretlerde kalır.
+ChartStyle = Literal["classic", "modern"]
+
 
 class CamelModel(BaseModel):
     model_config = ConfigDict(
@@ -52,6 +56,7 @@ class NatalRequest(CamelModel):
     zodiac_type: ZodiacType = "Tropical"
     chart_theme: ChartTheme = "black-and-white"
     chart_language: ChartLanguage = "TR"
+    chart_style: ChartStyle = "modern"
     include_svg: bool = True
     #: Açı ızgarası SVG'yi ~50KB büyütüyor; sayfa varsayılanı yalnız çark.
     wheel_only: bool = True

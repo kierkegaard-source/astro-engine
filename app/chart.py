@@ -272,6 +272,10 @@ def build_natal(request: NatalRequest) -> NatalResponse:
             chart_data,
             theme=request.chart_theme,
             chart_language=request.chart_language,
+            # `modern`: her gezegenin yanına derece + burç + dakika yazar
+            # (retro için RX). `classic`te dereceler yalnız dış halkadaki
+            # işaretlerde kalıyor ve çarktan okunamıyor.
+            style=request.chart_style,
         )
         svg = (
             drawer.generate_wheel_only_svg_string()
