@@ -1,0 +1,25 @@
+# Sürümler SABİT.
+#
+# Kerykeion'ın API'si sürümler arasında değişiyor: bu planın ilk taslağı
+# ezberden yazılmıştı ve yedi noktada gerçek imzayla uyuşmuyordu
+# (`Tropic` vs `Tropical`, `Placidus` vs `P`, `to_context()` yeri...).
+# Yükseltme bilinçli bir iş olsun, "pip install -U" ile sessizce gelmesin.
+kerykeion==5.12.9
+pyswisseph==2.10.3.2
+timezonefinder==8.2.5
+
+# `zoneinfo` saat dilimi verisini işletim sisteminden okur. Linux'ta sistem
+# tzdb var, Windows'ta YOK — orada `ZoneInfo("Europe/Istanbul")` doğrudan
+# patlıyor. Geliştirme Windows'ta yapıldığı için zorunlu; Linux'ta zararsız.
+#
+# Not: Kerykeion kendi içinde pytz kullanıyor, yani onun hesabı bu paket
+# olmadan da çalışırdı. Patlayan şey bizim BAĞIMSIZ offset kontrolümüzdü —
+# iki ayrı kaynak kullanmanın ilk faydası bu oldu.
+tzdata==2026.3
+
+fastapi==0.121.2
+uvicorn[standard]==0.52.3
+httpx==0.28.1
+pydantic==2.13.4
+
+pytest==9.1.1
