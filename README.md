@@ -34,6 +34,41 @@ açılır ve önünde hiçbir yetki katmanı yoktur.
 İstek/yanıt alanları **camelCase**; Python içinde snake_case, dönüşüm
 Pydantic alias ile.
 
+## Yerelde deneme
+
+**1. Motoru başlat** (bu klasörden):
+
+```bash
+# Windows
+$env:ASTRO_ENGINE_DEV="1"; .venv\Scripts\python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8787
+
+# Linux/macOS
+ASTRO_ENGINE_DEV=1 .venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8787
+```
+
+**2. Tarayıcıdan bak**
+
+| Adres | Ne yapar |
+|---|---|
+| <http://127.0.0.1:8787/health> | Gerçek bir hesap yapıp döner |
+| <http://127.0.0.1:8787/docs> | **Swagger arayüzü** — `/v1/natal`'ı form doldurup deneyebilirsiniz (yalnız `ASTRO_ENGINE_DEV=1` iken açık) |
+| <http://127.0.0.1:8787/v1/geocode?q=izmir> | Yer arama |
+
+**3. Çarkı görmek için**
+
+```bash
+.venv/Scripts/python.exe tools/preview.py
+.venv/Scripts/python.exe tools/preview.py 1990-05-17 14:30 41.0082 28.9784 "İstanbul"
+.venv/Scripts/python.exe tools/preview.py 1985-07-14 --no-time
+```
+
+`tools/chart.html` üretir ve tarayıcıda açar: çark, saat dilimi çözümü,
+gezegen/ev/açı tabloları, ham JSON ve LLM bağlamı tek sayfada.
+
+> **Not:** Çarkı `sharp` gibi bir kütüphaneyle PNG'ye çevirmeye
+> çalışmayın — librsvg zincirleme `var()` çözemediği için tamamen siyah
+> bir daire üretir. Tarayıcıda sorun yok.
+
 ## İki kural
 
 **1. Saat dilimi ADIYLA geçilir.** `"Europe/Istanbul"` — sayısal offset

@@ -10,6 +10,7 @@ Bu yüzden burada auth yok — yetki kontrolü Next tarafında.
 """
 
 import logging
+import os
 
 from fastapi import FastAPI, Query
 from fastapi.responses import JSONResponse
@@ -25,11 +26,18 @@ from .schemas import (
 
 logger = logging.getLogger("astro-engine")
 
+#: Geliştirmede `/docs` arayüzünü açar (ASTRO_ENGINE_DEV=1).
+#:
+#: Üretimde KAPALI: servis kimlik doğrulaması olmayan bir iç servis ve
+#: şema dökümünü yayınlamasının bir faydası yok. Yerelde ise POST ucunu
+#: denemenin en kolay yolu — tarayıcıdan form doldurup yanıtı görürsünüz.
+DEV_MODE = os.getenv("ASTRO_ENGINE_DEV") == "1"
+
 app = FastAPI(
     title="astro-engine",
-    docs_url=None,
+    docs_url="/docs" if DEV_MODE else None,
     redoc_url=None,
-    openapi_url=None,
+    openapi_url="/openapi.json" if DEV_MODE else None,
 )
 
 

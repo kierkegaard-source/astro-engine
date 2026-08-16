@@ -2,3 +2,6 @@
 __pycache__/
 *.pyc
 .pytest_cache/
+
+# tools/preview.py çıktısı — yerel gözle kontrol için, versiyonlanmaz.
+tools/chart.html
