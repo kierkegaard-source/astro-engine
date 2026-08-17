@@ -160,20 +160,20 @@ def render(data: dict) -> str:
 <div class="grid">
   <div>
     <h2>Gezegenler</h2>
-    {rows(data['planets'], [('Gezegen', 'nameTr'), ('Burç', 'signTr'),
-                            ('Derece', 'degreeInSign'), ('Ev', 'house'), ('R', 'retrograde')])}
+    {rows(data['planets'], [('Planet', 'name'), ('Sign', 'sign'),
+                            ('Degree', 'degreeInSign'), ('House', 'house'), ('R', 'retrograde')])}
     <h2>Eksenler</h2>
-    {rows(data['axes'], [('Nokta', 'nameTr'), ('Burç', 'signTr'), ('Derece', 'degreeInSign')])}
+    {rows(data['axes'], [('Point', 'name'), ('Sign', 'sign'), ('Degree', 'degreeInSign')])}
   </div>
   <div>
     <h2>Evler</h2>
-    {rows(data['houses'], [('Ev', 'number'), ('Burç', 'signTr'), ('Derece', 'degreeInSign')])}
+    {rows(data['houses'], [('House', 'number'), ('Sign', 'sign'), ('Degree', 'degreeInSign')])}
   </div>
 </div>
 
 <h2>Açılar ({len(data['aspects'])})</h2>
 {rows(sorted(data['aspects'], key=lambda a: a['orb'])[:20],
-      [('', 'p1Tr'), ('Açı', 'aspectTr'), ('', 'p2Tr'), ('Orb', 'orb'), ('Yaklaşan', 'applying')])}
+      [('', 'p1'), ('Aspect', 'aspect'), ('', 'p2'), ('Orb', 'orb'), ('Applying', 'applying')])}
 <p style="color:#666;font-size:13px">Orb'a göre en yakın 20 açı gösteriliyor.</p>
 
 <h2>Dağılımlar</h2>

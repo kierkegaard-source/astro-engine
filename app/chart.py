@@ -47,54 +47,21 @@ HOUSE_SYSTEM_CODES = {
 }
 
 #: Kerykeion burçları üç harfle döndürüyor ("Can", "Vir").
+#: Motor YALNIZ kanonik İngilizce döndürür; yerelleştirme uygulamanın işi
+#: (bkz. PLAN.md Faz L2.4). Motor AGPL public repo olduğu için de doğrusu bu.
 SIGNS = {
-    "Ari": ("Aries", "Koç"),
-    "Tau": ("Taurus", "Boğa"),
-    "Gem": ("Gemini", "İkizler"),
-    "Can": ("Cancer", "Yengeç"),
-    "Leo": ("Leo", "Aslan"),
-    "Vir": ("Virgo", "Başak"),
-    "Lib": ("Libra", "Terazi"),
-    "Sco": ("Scorpio", "Akrep"),
-    "Sag": ("Sagittarius", "Yay"),
-    "Cap": ("Capricorn", "Oğlak"),
-    "Aqu": ("Aquarius", "Kova"),
-    "Pis": ("Pisces", "Balık"),
-}
-
-PLANET_TR = {
-    "Sun": "Güneş",
-    "Moon": "Ay",
-    "Mercury": "Merkür",
-    "Venus": "Venüs",
-    "Mars": "Mars",
-    "Jupiter": "Jüpiter",
-    "Saturn": "Satürn",
-    "Uranus": "Uranüs",
-    "Neptune": "Neptün",
-    "Pluto": "Plüton",
-    "Chiron": "Chiron",
-    "Mean_Lilith": "Lilith",
-    "True_North_Lunar_Node": "Kuzey Ay Düğümü",
-    "True_South_Lunar_Node": "Güney Ay Düğümü",
-    "Ascendant": "Yükselen",
-    "Medium_Coeli": "Tepe Noktası",
-    "Descendant": "Alçalan",
-    "Imum_Coeli": "Dip Nokta",
-}
-
-ASPECT_TR = {
-    "conjunction": "Kavuşum",
-    "opposition": "Karşıt",
-    "trine": "Üçgen",
-    "square": "Kare",
-    "sextile": "Altmışlık",
-    "quintile": "Beşlik",
-    "semi-sextile": "Yarım altmışlık",
-    "semi-square": "Yarım kare",
-    "sesquiquadrate": "Bir buçuk kare",
-    "biquintile": "İki beşlik",
-    "quincunx": "Yüz ellilik",
+    "Ari": "Aries",
+    "Tau": "Taurus",
+    "Gem": "Gemini",
+    "Can": "Cancer",
+    "Leo": "Leo",
+    "Vir": "Virgo",
+    "Lib": "Libra",
+    "Sco": "Scorpio",
+    "Sag": "Sagittarius",
+    "Cap": "Capricorn",
+    "Aqu": "Aquarius",
+    "Pis": "Pisces",
 }
 
 MAJOR_ASPECTS = {"conjunction", "opposition", "trine", "square", "sextile"}
@@ -116,20 +83,9 @@ HOUSE_KEYS = [
 
 HOUSE_NUMBERS = {name: index + 1 for index, name in enumerate(HOUSE_KEYS)}
 
-MOON_PHASE_TR = {
-    "New Moon": "Yeni Ay",
-    "Waxing Crescent": "Büyüyen Hilal",
-    "First Quarter": "İlk Dördün",
-    "Waxing Gibbous": "Büyüyen Şişkin Ay",
-    "Full Moon": "Dolunay",
-    "Waning Gibbous": "Küçülen Şişkin Ay",
-    "Last Quarter": "Son Dördün",
-    "Waning Crescent": "Küçülen Hilal",
-}
 
-
-def _sign(abbr: str) -> tuple[str, str]:
-    return SIGNS.get(abbr, (abbr, abbr))
+def _sign(abbr: str) -> str:
+    return SIGNS.get(abbr, abbr)
 
 
 def _house_number(raw: Any) -> Optional[int]:
@@ -139,14 +95,11 @@ def _house_number(raw: Any) -> Optional[int]:
 
 
 def _point(raw: dict[str, Any]) -> Point:
-    sign_en, sign_tr = _sign(raw.get("sign", ""))
     name = raw.get("name", "")
 
     return Point(
         name=name,
-        name_tr=PLANET_TR.get(name, name),
-        sign=sign_en,
-        sign_tr=sign_tr,
+        sign=_sign(raw.get("sign", "")),
         degree_in_sign=round(raw.get("position", 0.0), 4),
         abs_degree=round(raw.get("abs_pos", 0.0), 4),
         house=_house_number(raw.get("house")),
@@ -317,9 +270,9 @@ def build_natal(request: NatalRequest) -> NatalResponse:
             longitude=request.longitude,
         ),
         big_three=BigThree(
-            sun=_sign(data["sun"]["sign"])[1],
-            moon=_sign(data["moon"]["sign"])[1],
-            ascendant=_sign(data["ascendant"]["sign"])[1],
+            sun=_sign(data["sun"]["sign"]),
+            moon=_sign(data["moon"]["sign"]),
+            ascendant=_sign(data["ascendant"]["sign"]),
         ),
         planets=[_point(data[key]) for key in PLANET_KEYS if data.get(key)],
         axes=[_point(data[key]) for key in AXIS_KEYS if data.get(key)],
@@ -340,7 +293,6 @@ def build_natal(request: NatalRequest) -> NatalResponse:
         ),
         moon_phase=MoonPhase(
             name=phase_name,
-            name_tr=MOON_PHASE_TR.get(phase_name, phase_name),
             # Elongasyondan aydınlanma oranı: (1 - cos θ) / 2
             illumination=round(_illumination(degrees), 1),
             degrees_between_sun_moon=round(degrees, 4),
@@ -356,12 +308,9 @@ def _display_name(request: NatalRequest) -> str:
 
 
 def _house(raw: dict[str, Any], key: str) -> House:
-    sign_en, sign_tr = _sign(raw.get("sign", ""))
-
     return House(
         number=HOUSE_NUMBERS[key],
-        sign=sign_en,
-        sign_tr=sign_tr,
+        sign=_sign(raw.get("sign", "")),
         degree_in_sign=round(raw.get("position", 0.0), 4),
         abs_degree=round(raw.get("abs_pos", 0.0), 4),
     )
@@ -374,11 +323,8 @@ def _aspect(raw: dict[str, Any]) -> Aspect:
 
     return Aspect(
         p1=p1,
-        p1_tr=PLANET_TR.get(p1, p1),
         p2=p2,
-        p2_tr=PLANET_TR.get(p2, p2),
         aspect=name,
-        aspect_tr=ASPECT_TR.get(name, name),
         aspect_degrees=int(raw.get("aspect_degrees", 0)),
         orb=round(abs(raw.get("orbit", 0.0)), 4),
         applying=raw.get("aspect_movement") == "Applying",
@@ -412,7 +358,7 @@ def health_check() -> dict[str, Any]:
         "engineVersion": ENGINE_VERSION,
         "selfTest": {
             "julianDay": data["julian_day"],
-            "sunSign": _sign(data["sun"]["sign"])[0],
-            "ascendantSign": _sign(data["ascendant"]["sign"])[0],
+            "sunSign": _sign(data["sun"]["sign"]),
+            "ascendantSign": _sign(data["ascendant"]["sign"]),
         },
     }

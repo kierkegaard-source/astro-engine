@@ -99,9 +99,7 @@ class Subject(CamelModel):
 
 class Point(CamelModel):
     name: str
-    name_tr: str
     sign: str
-    sign_tr: str
     degree_in_sign: float
     abs_degree: float
     house: Optional[int] = None
@@ -114,18 +112,14 @@ class Point(CamelModel):
 class House(CamelModel):
     number: int
     sign: str
-    sign_tr: str
     degree_in_sign: float
     abs_degree: float
 
 
 class Aspect(CamelModel):
     p1: str
-    p1_tr: str
     p2: str
-    p2_tr: str
     aspect: str
-    aspect_tr: str
     aspect_degrees: int
     orb: float
     applying: bool
@@ -139,7 +133,6 @@ class Distributions(CamelModel):
 
 class MoonPhase(CamelModel):
     name: str
-    name_tr: str
     #: 0–100
     illumination: float
     degrees_between_sun_moon: float
