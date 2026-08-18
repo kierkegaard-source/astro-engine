@@ -157,6 +157,8 @@ class NatalResponse(CamelModel):
     moon_phase: MoonPhase
     svg: Optional[str] = None
     llm_context: str
+    # Yerelleştirilebilir uyarı KODLARI (ör. "TIME_UNKNOWN") — düz metin
+    # değil. Metin karşılıkları çağıran uygulamanın sözlüğünde.
     warnings: list[str]
 
 

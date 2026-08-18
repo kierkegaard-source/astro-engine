@@ -168,12 +168,14 @@ def build_natal(request: NatalRequest) -> NatalResponse:
     hour, minute = _parse_time(request.time, request.time_known)
     zone = _resolve_timezone(request.timezone)
 
+    # Uyarılar KOD olarak dönüyor, düz metin olarak değil. Motor iki dilli
+    # bir siteye hizmet ediyor ve düz metin dönerse o metin olduğu gibi
+    # sayfaya basılır — İngilizce sitede Türkçe uyarı çıkıyordu. Aynı
+    # gerekçe gezegen/açı/burç adlarında da uygulanmıştı; uyarı alanı
+    # gözden kaçmıştı. Çeviri uygulamada: `lib/astro/labels.ts`.
     warnings: list[str] = []
     if not request.time_known:
-        warnings.append(
-            "Doğum saati bilinmiyor; 12:00 varsayıldı. Yükselen, tepe noktası, "
-            "ev cuspları ve Ay derecesi güvenilmez."
-        )
+        warnings.append("TIME_UNKNOWN")
 
     # Offset ve yaz saati bilgisi, Kerykeion'dan BAĞIMSIZ olarak zoneinfo'dan
     # alınıyor: iki kaynak da aynı şeyi söylüyorsa güven artar, ayrışırsa
