@@ -163,25 +163,6 @@ class NatalResponse(CamelModel):
 
 
 # --------------------------------------------------------------------- #
-# Geocoding                                                              #
-# --------------------------------------------------------------------- #
-
-
-class GeocodeResult(CamelModel):
-    name: str
-    admin1: Optional[str] = None
-    country: Optional[str] = None
-    country_code: Optional[str] = None
-    latitude: float
-    longitude: float
-    timezone: str
-
-
-class GeocodeResponse(CamelModel):
-    results: list[GeocodeResult]
-
-
-# --------------------------------------------------------------------- #
 # Hata                                                                   #
 # --------------------------------------------------------------------- #
 

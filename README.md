@@ -64,11 +64,25 @@ açılır ve önünde hiçbir yetki katmanı yoktur.
 | | |
 |---|---|
 | `GET /health` | Gerçek bir hesap yapar. Sadece `{"ok":true}` değil — efemeris dosyaları eksikse bunu yalnız gerçek hesap yakalar. |
-| `GET /v1/geocode?q=izmir&limit=5` | Open-Meteo proxy + `timezonefinder` ile IANA zone |
 | `POST /v1/natal` | Natal harita: gezegenler, eksenler, ev cuspları, açılar, dağılımlar, SVG çark, LLM bağlamı |
 
 İstek/yanıt alanları **camelCase**; Python içinde snake_case, dönüşüm
 Pydantic alias ile.
+
+### Yer arama burada DEĞİL
+
+Motorda bir `/v1/geocode` ucu vardı; Open-Meteo'ya proxy yapıyor ve her
+sonuca `timezonefinder` ile IANA zone ekliyordu. Kaldırıldı (4 Eyl 2026):
+
+* Blog uygulaması Open-Meteo'yu **doğrudan** çağırıyor
+  (`src/lib/astro/geocode.ts`). Araya Python koymanın tek kazancı saat
+  dilimini koordinattan çözmekti, ama Open-Meteo o alanı zaten döndürüyor.
+* Asıl sebep bağımlılık yönü: yükselen burç aracı sunucusuz çalışacak
+  şekilde tasarlanmıştı, geocode onu motora bağımlı kılmıştı. Motor
+  düştüğünde yükselen aracı da ölüyordu.
+
+Motor artık **yalnız natal harita** için gerekli. `timezonefinder` (~50MB)
+bağımlılığı da bu yüzden kalktı.
 
 ## Yerelde deneme
 
@@ -88,7 +102,6 @@ ASTRO_ENGINE_DEV=1 .venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8787
 |---|---|
 | <http://127.0.0.1:8787/health> | Gerçek bir hesap yapıp döner |
 | <http://127.0.0.1:8787/docs> | **Swagger arayüzü** — `/v1/natal`'ı form doldurup deneyebilirsiniz (yalnız `ASTRO_ENGINE_DEV=1` iken açık) |
-| <http://127.0.0.1:8787/v1/geocode?q=izmir> | Yer arama |
 
 **3. Çarkı görmek için**
 

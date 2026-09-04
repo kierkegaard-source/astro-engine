@@ -6,7 +6,6 @@
 # Yükseltme bilinçli bir iş olsun, "pip install -U" ile sessizce gelmesin.
 kerykeion==5.12.9
 pyswisseph==2.10.3.2
-timezonefinder==8.2.5
 
 # `zoneinfo` saat dilimi verisini işletim sisteminden okur. Linux'ta sistem
 # tzdb var, Windows'ta YOK — orada `ZoneInfo("Europe/Istanbul")` doğrudan

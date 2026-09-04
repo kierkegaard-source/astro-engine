@@ -12,17 +12,11 @@ Bu yüzden burada auth yok — yetki kontrolü Next tarafında.
 import logging
 import os
 
-from fastapi import FastAPI, Query
+from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
-from . import geocode
 from .chart import build_natal, health_check
-from .schemas import (
-    EngineError,
-    GeocodeResponse,
-    NatalRequest,
-    NatalResponse,
-)
+from .schemas import EngineError, NatalRequest, NatalResponse
 
 logger = logging.getLogger("astro-engine")
 
@@ -89,14 +83,6 @@ async def health() -> dict:
             "Efemeris hesabı yapılamıyor.",
             status_code=503,
         ) from exc
-
-
-@app.get("/v1/geocode", response_model=GeocodeResponse, response_model_by_alias=True)
-async def geocode_endpoint(
-    q: str = Query(min_length=1, max_length=120),
-    limit: int = Query(default=5, ge=1, le=10),
-) -> GeocodeResponse:
-    return GeocodeResponse(results=await geocode.search(q, limit))
 
 
 @app.post("/v1/natal", response_model=NatalResponse, response_model_by_alias=True)
