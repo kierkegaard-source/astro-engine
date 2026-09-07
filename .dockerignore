@@ -1,0 +1,10 @@
+# 204 MB'lık yerel sanal ortam; imaj bağımlılıkları kendi kuruyor.
+.venv
+__pycache__
+**/__pycache__
+*.pyc
+.pytest_cache
+# Geliştirme önizleme aracı; servis ona bağımlı değil.
+tools
+*.md
+
